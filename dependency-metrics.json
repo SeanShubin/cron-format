@@ -1,0 +1,31 @@
+{
+    "searchPaths": [
+        [ "core", "target", "cron-format-core-1.0-SNAPSHOT.jar" ]
+    ],
+    "styleSheet": [ "dependency-metrics.css" ],
+    "relevantDependencyPattern": {
+        "includeRegex": [ "com/seanshubin/cron/format/core/.*" ],
+        "excludeRegex": [ ]
+    },
+    "trimRegex": "^com/seanshubin/cron/format/core/",
+    "classFileNamePattern": {
+        "includeRegex": [ ".*\\.class" ],
+        "excludeRegex": [ ]
+    },
+    "zipFileNamePattern": {
+        "includeRegex": [ ".*\\.zip", ".*\\.war", ".*\\.jar" ],
+        "excludeRegex": [ ]
+    },
+    "generatedReportDirectory": [ "core", "target", "dependency-report" ],
+    "classLimits": {
+        "depth": 10,
+        "complexity": 100,
+        "cycleCount": 0
+    },
+    "packageLimits": {
+        "depth": 10,
+        "complexity": 50,
+        "cycleCount": 0
+    },
+    "failIfAnyLimitExceeded": true
+}
