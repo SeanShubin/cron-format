@@ -111,13 +111,26 @@ object VerboseCron {
   object Values extends CronRange {
     override def matches(text: String): Boolean = text.contains(",")
 
-    override def parse(text: String, partParser: CronPartParser): Either[String, String] = ???
+    override def parse(text: String, partParser: CronPartParser): Either[String, String] = {
+      val parts = text.split(",", -1).toSeq
+      collapseEithers(parts.map(partParser.parse)) match {
+        case Right(values) =>
+          val valuesString = values.reverse.mkString(" ")
+          Right(s"${partParser.singular} is $valuesString")
+        case Left(errors) =>
+          Left(errors.mkString(", "))
+      }
+    }
   }
 
   object Question extends CronRange {
     override def matches(text: String): Boolean = text.contains("?")
 
-    override def parse(text: String, partParser: CronPartParser): Either[String, String] = ???
+    override def parse(text: String, partParser: CronPartParser): Either[String, String] = {
+      if (text == "?") Right(s"any ${partParser.singular}")
+      else Left(s"Expected '?', got '$text'")
+
+    }
   }
 
   object Single extends CronRange {
