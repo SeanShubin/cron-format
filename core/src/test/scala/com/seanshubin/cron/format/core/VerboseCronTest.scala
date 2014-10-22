@@ -288,7 +288,13 @@ class VerboseCronTest  extends FunSuite {
       ("0 23 0 15 * ? *", "second is 0, minute is 23, hour is 0, day is 15, every month, any week, every year"),
       ("45 23 8 15 5 ? 2001", "second is 45, minute is 23, hour is 8, day is 15, month is May, any week, year is 2001"),
       ("30-45 2/3 * 2,3,7 5 ? 2001-2005", "second is between 30 and 45, every 3 minutes starting at 2, every hour, day is 2 3 7, month is May, any week, year is between 2001 and 2005"),
-      ("0 0 * * * ? *", "second is 0, minute is 0, every hour, every day, every month, any week, every year")
+      ("0 0 * * * ? *", "second is 0, minute is 0, every hour, every day, every month, any week, every year"),
+      ("* * * * * ? *", "every second, every minute, every hour, every day, every month, any week, every year"),
+      ("* * * * * ? 2015/1", "every second, every minute, every hour, every day, every month, any week, every year starting at 2015"),
+      ("* * * * * ? 2015/2", "every second, every minute, every hour, every day, every month, any week, every 2 years starting at 2015"),
+      ("0 0 0 1 1 ? 2015/1", "second is 0, minute is 0, hour is 0, day is 1, month is January, any week, every year starting at 2015"),
+      ("0 0 0 1 1 ? 2015/2", "second is 0, minute is 0, hour is 0, day is 1, month is January, any week, every 2 years starting at 2015")
+
     )
     def verify(testTuple:(String, String)): Unit = {
       val (cron, expected) = testTuple
@@ -297,5 +303,4 @@ class VerboseCronTest  extends FunSuite {
     }
     testData.foreach(verify)
   }
-
 }

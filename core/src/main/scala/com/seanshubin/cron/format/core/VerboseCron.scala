@@ -87,23 +87,33 @@ object VerboseCron {
 
     override def parse(text: String, partParser: CronPartParser): Either[String, String] = {
       val parts = text.split("/", -1).toSeq
-      collapseEithers(parts.map(partParser.parse)) match {
-        case Right(values) =>
-          if (values.size == 2) {
-            val start = values(1).toInt
-            val step = values(0).toInt
-            val value = if (start == 0) {
-              if (step == 1) s"every ${partParser.singular}"
-              else s"every $step ${partParser.plural}"
-            }
-            else {
-              if (step == 1) s"every ${partParser.singular} starting at $start"
-              else s"every $step ${partParser.plural} starting at $start"
-            }
-            Right(value)
-          } else Left(s"Only 2 values allowed in a range, got ${values.size}")
-        case Left(errors) =>
-          Left(errors.mkString(", "))
+      if(parts.size == 2) {
+        val step:Either[String, String] = try {
+          Right(parts(1).toInt.toString)
+        } catch {
+          case _:NumberFormatException => Left(s"Unable to convert '${parts(1)}' to a number")
+        }
+        val start:Either[String, String] = partParser.parse(parts(0))
+        collapseEithers(Seq(start, step)) match {
+          case Right(values) =>
+            if (values.size == 2) {
+              val start = values(1).toInt
+              val step = values(0).toInt
+              val value = if (start == 0) {
+                if (step == 1) s"every ${partParser.singular}"
+                else s"every $step ${partParser.plural}"
+              }
+              else {
+                if (step == 1) s"every ${partParser.singular} starting at $start"
+                else s"every $step ${partParser.plural} starting at $start"
+              }
+              Right(value)
+            } else Left(s"Only 2 values allowed in a range, got ${values.size}")
+          case Left(errors) =>
+            Left(errors.mkString(", "))
+        }
+      } else {
+        Left(s"When using /, must have exactly 2 values, got ${parts.size}")
       }
     }
   }
