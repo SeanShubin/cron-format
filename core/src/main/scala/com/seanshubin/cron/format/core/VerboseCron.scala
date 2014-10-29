@@ -4,10 +4,18 @@ import scala.collection.mutable.ArrayBuffer
 
 object VerboseCron {
   def cronToVerboseCron(cron: String): Either[String, String] = {
-    val cronParts = cron.split("\\s+", -1).toSeq
-    val partsAndParsers = cronParts zip cronPartParsers
-    val builder = partsAndParsers.foldLeft(ParsedCronBuilder())(parseCronRange)
-    builder.build()
+    if (cron.trim.isEmpty) {
+      Left("cron expression must not be empty")
+    } else {
+      val cronParts = cron.split("\\s+", -1).toSeq
+      if (cronParts.size == 6 || cronParts.size == 7) {
+        val partsAndParsers = cronParts zip cronPartParsers
+        val builder = partsAndParsers.foldLeft(ParsedCronBuilder())(parseCronRange)
+        builder.build()
+      } else {
+        Left(s"cron expression '$cron' is invalid, it must have 6 or 7 elements, but has ${cronParts.size}")
+      }
+    }
   }
 
   case class ParsedCronBuilder(parsedCronParts: List[String] = Nil, errors: List[String] = Nil) {
@@ -63,18 +71,18 @@ object VerboseCron {
   }
 
   def collapseEithers(eithers: Seq[Either[String, String]]): Either[Seq[String], Seq[String]] = {
-    val initialValue:Either[Seq[String], Seq[String]] = Right(Seq())
+    val initialValue: Either[Seq[String], Seq[String]] = Right(Seq())
     eithers.foldLeft(initialValue)(collapseEither)
   }
-  
-  def collapseEither(soFar:Either[Seq[String], Seq[String]], current: Either[String, String]):Either[Seq[String], Seq[String]] = {
+
+  def collapseEither(soFar: Either[Seq[String], Seq[String]], current: Either[String, String]): Either[Seq[String], Seq[String]] = {
     soFar match {
       case Left(errors) =>
         current match {
           case Left(error) => Left(error +: errors)
           case Right(value) => soFar
         }
-      case Right(values)=>
+      case Right(values) =>
         current match {
           case Left(error) => Left(Seq(error))
           case Right(value) => Right(value +: values)
@@ -87,30 +95,21 @@ object VerboseCron {
 
     override def parse(text: String, partParser: CronPartParser): Either[String, String] = {
       val parts = text.split("/", -1).toSeq
-      if(parts.size == 2) {
-        val step:Either[String, String] = try {
-          Right(parts(1).toInt.toString)
-        } catch {
-          case _:NumberFormatException => Left(s"Unable to convert '${parts(1)}' to a number")
-        }
-        val start:Either[String, String] = partParser.parse(parts(0))
-        collapseEithers(Seq(start, step)) match {
-          case Right(values) =>
-            if (values.size == 2) {
-              val start = values(1).toInt
-              val step = values(0).toInt
-              val value = if (start == 0) {
-                if (step == 1) s"every ${partParser.singular}"
-                else s"every $step ${partParser.plural}"
-              }
-              else {
-                if (step == 1) s"every ${partParser.singular} starting at $start"
-                else s"every $step ${partParser.plural} starting at $start"
-              }
-              Right(value)
-            } else Left(s"Only 2 values allowed in a range, got ${values.size}")
-          case Left(errors) =>
-            Left(errors.mkString(", "))
+      if (parts.size == 2) {
+        val step = validateInt(parts(1))
+        val start = partParser.parse(parts(0))
+        (step, start) match {
+          case (Right("1"), Right("0")) =>
+            Right(s"every ${partParser.singular}")
+          case (Right(stepValue), Right("0")) =>
+            Right(s"every $stepValue ${partParser.plural}")
+          case (Right("1"), Right(startValue)) =>
+            Right(s"every ${partParser.singular} starting at $startValue")
+          case (Right(stepValue), Right(startValue)) =>
+            Right(s"every $stepValue ${partParser.plural} starting at $startValue")
+          case (Left(x), Left(y)) => Left(s"$x, $y")
+          case (Left(x), _) => Left(x)
+          case (_, Left(x)) => Left(x)
         }
       } else {
         Left(s"When using /, must have exactly 2 values, got ${parts.size}")
@@ -178,7 +177,16 @@ object VerboseCron {
     }
 
     def singular: String
+
     def plural: String
+  }
+
+  def validateInt(text: String): Either[String, String] = {
+    try {
+      Right(text.toInt.toString)
+    } catch {
+      case _: NumberFormatException => Left(s"Unable to convert '$text' to a number")
+    }
   }
 
   class Second extends CronPartParser {
@@ -272,13 +280,13 @@ object VerboseCron {
         case Some(dayOfWeekEnum) =>
           Right(s"${dayOfWeekEnum.name}")
         case None =>
-          Left(s"invalid value for day of $singular: '$text' is not a whole number between 1 and 7, and is not a 3-letter day of $singular abbreviation")
+          Left(s"invalid value for $singular: '$text' is not a whole number between 1 and 7, and is not a 3-letter $singular abbreviation")
       }
     }
 
-    override def singular: String = "week"
+    override def singular: String = "day of week"
 
-    override def plural: String = "weeks"
+    override def plural: String = "days of week"
   }
 
   class Year extends CronPartParser {

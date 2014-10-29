@@ -2,9 +2,15 @@ package com.seanshubin.cron.format.core
 
 import org.scalatest.FunSuite
 
-class VerboseCronTest  extends FunSuite {
+class VerboseCronTest extends FunSuite {
+  test("foo") {
+    val actual = VerboseCron.cronToVerboseCron("0/1 0/2 0 1/2 8/1 MON/2 1900")
+    val expected = Right("every second, every 2 minutes, hour is 0, every 2 days starting at 1, every month starting at August, every 2 days of week starting at Monday, year is 1900")
+    assert(actual === expected)
+  }
+
   test("second") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.second.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -12,7 +18,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.second.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -27,7 +33,7 @@ class VerboseCronTest  extends FunSuite {
     invalid("nan", "invalid value for second: 'nan' is not a whole number")
   }
   test("minute") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.minute.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -35,7 +41,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.minute.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -50,7 +56,7 @@ class VerboseCronTest  extends FunSuite {
     invalid("nan", "invalid value for minute: 'nan' is not a whole number")
   }
   test("hour") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.hour.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -58,7 +64,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.hour.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -73,7 +79,7 @@ class VerboseCronTest  extends FunSuite {
     invalid("nan", "invalid value for hour: 'nan' is not a whole number")
   }
   test("day of month") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.dayOfMonth.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -81,7 +87,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.dayOfMonth.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -96,7 +102,7 @@ class VerboseCronTest  extends FunSuite {
     invalid("nan", "invalid value for day: 'nan' is not a whole number")
   }
   test("month of year - numeric") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.month.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -104,7 +110,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.month.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -119,7 +125,7 @@ class VerboseCronTest  extends FunSuite {
     invalid("nan", "invalid value for month: 'nan' is not a whole number between 1 and 12, and is not a 3-letter month abbreviation")
   }
   test("month of year - abbreviation") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.month.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -127,7 +133,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.month.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -161,7 +167,7 @@ class VerboseCronTest  extends FunSuite {
     valid("DEC", "December")
   }
   test("day of week - numeric") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.dayOfWeek.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -169,7 +175,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.dayOfWeek.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -184,7 +190,7 @@ class VerboseCronTest  extends FunSuite {
     invalid("nan", "invalid value for day of week: 'nan' is not a whole number between 1 and 7, and is not a 3-letter day of week abbreviation")
   }
   test("day of week - abbreviation") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.dayOfWeek.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -192,7 +198,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.dayOfWeek.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -216,7 +222,7 @@ class VerboseCronTest  extends FunSuite {
     valid("SAT", "Saturday")
   }
   test("year") {
-    def valid(input:String, expected:String) = {
+    def valid(input: String, expected: String) = {
       VerboseCron.year.parse(input) match {
         case Left(message) =>
           fail(s"expected valid value '$expected', but got error '$message'")
@@ -224,7 +230,7 @@ class VerboseCronTest  extends FunSuite {
           assert(actual === expected)
       }
     }
-    def invalid(input:String, expected:String) = {
+    def invalid(input: String, expected: String) = {
       VerboseCron.year.parse(input) match {
         case Left(message) =>
           assert(message === expected)
@@ -250,7 +256,7 @@ class VerboseCronTest  extends FunSuite {
         try {
           Right(s"$text")
         } catch {
-          case ex:NumberFormatException => Left(s"unable to convert '$text' to a number")
+          case ex: NumberFormatException => Left(s"unable to convert '$text' to a number")
         }
       }
 
@@ -267,40 +273,63 @@ class VerboseCronTest  extends FunSuite {
   }
   test("describe cron") {
     val testData = Seq(
-      ("1 2 3 4 5 6 1978", "second is 1, minute is 2, hour is 3, day is 4, month is May, week is Friday, year is 1978"),
-      ("1 2 3 4 may fri 1978", "second is 1, minute is 2, hour is 3, day is 4, month is May, week is Friday, year is 1978"),
-      ("0 0 0 * * ? *", "second is 0, minute is 0, hour is 0, every day, every month, any week, every year"),
-      ("1 0 0 * * ? *", "second is 1, minute is 0, hour is 0, every day, every month, any week, every year"),
-      ("2 0 0 * * ? *", "second is 2, minute is 0, hour is 0, every day, every month, any week, every year"),
-      ("2-4 0 0 * * ? *", "second is between 2 and 4, minute is 0, hour is 0, every day, every month, any week, every year"),
-      ("1/5 0 0 * * ? *", "every 5 seconds starting at 1, minute is 0, hour is 0, every day, every month, any week, every year"),
-      ("5/1 0 0 * * ? *", "every second starting at 5, minute is 0, hour is 0, every day, every month, any week, every year"),
-      ("1,2,3 0 0 * * ? *", "second is 1 2 3, minute is 0, hour is 0, every day, every month, any week, every year"),
-      ("* 0 0 * * ? *", "every second, minute is 0, hour is 0, every day, every month, any week, every year"),
-      ("0 3-5 0 * * ? *","second is 0, minute is between 3 and 5, hour is 0, every day, every month, any week, every year"),
-      ("0 0 3/1 * * ? *", "second is 0, minute is 0, every hour starting at 3, every day, every month, any week, every year"),
-      ("0 0 1/3 * * ? *", "second is 0, minute is 0, every 3 hours starting at 1, every day, every month, any week, every year"),
-      ("0 0 0/3 * * ? *", "second is 0, minute is 0, every 3 hours, every day, every month, any week, every year"),
-      ("0 0 0 1 * ? *", "second is 0, minute is 0, hour is 0, day is 1, every month, any week, every year"),
-      ("0 0 0 * 2 ? *", "second is 0, minute is 0, hour is 0, every day, month is February, any week, every year"),
-      ("0 0 0 * * ? 2000", "second is 0, minute is 0, hour is 0, every day, every month, any week, year is 2000"),
-      ("12 0 23 * 11 ? 1978", "second is 12, minute is 0, hour is 23, every day, month is November, any week, year is 1978"),
-      ("0 23 0 15 * ? *", "second is 0, minute is 23, hour is 0, day is 15, every month, any week, every year"),
-      ("45 23 8 15 5 ? 2001", "second is 45, minute is 23, hour is 8, day is 15, month is May, any week, year is 2001"),
-      ("30-45 2/3 * 2,3,7 5 ? 2001-2005", "second is between 30 and 45, every 3 minutes starting at 2, every hour, day is 2 3 7, month is May, any week, year is between 2001 and 2005"),
-      ("0 0 * * * ? *", "second is 0, minute is 0, every hour, every day, every month, any week, every year"),
-      ("* * * * * ? *", "every second, every minute, every hour, every day, every month, any week, every year"),
-      ("* * * * * ? 2015/1", "every second, every minute, every hour, every day, every month, any week, every year starting at 2015"),
-      ("* * * * * ? 2015/2", "every second, every minute, every hour, every day, every month, any week, every 2 years starting at 2015"),
-      ("0 0 0 1 1 ? 2015/1", "second is 0, minute is 0, hour is 0, day is 1, month is January, any week, every year starting at 2015"),
-      ("0 0 0 1 1 ? 2015/2", "second is 0, minute is 0, hour is 0, day is 1, month is January, any week, every 2 years starting at 2015")
+      ("1 2 3 4 5 6 1978", "second is 1, minute is 2, hour is 3, day is 4, month is May, day of week is Friday, year is 1978"),
+      ("1 2 3 4 may fri 1978", "second is 1, minute is 2, hour is 3, day is 4, month is May, day of week is Friday, year is 1978"),
+      ("0 0 0 * * ? *", "second is 0, minute is 0, hour is 0, every day, every month, any day of week, every year"),
+      ("1 0 0 * * ? *", "second is 1, minute is 0, hour is 0, every day, every month, any day of week, every year"),
+      ("2 0 0 * * ? *", "second is 2, minute is 0, hour is 0, every day, every month, any day of week, every year"),
+      ("2-4 0 0 * * ? *", "second is between 2 and 4, minute is 0, hour is 0, every day, every month, any day of week, every year"),
+      ("1/5 0 0 * * ? *", "every 5 seconds starting at 1, minute is 0, hour is 0, every day, every month, any day of week, every year"),
+      ("5/1 0 0 * * ? *", "every second starting at 5, minute is 0, hour is 0, every day, every month, any day of week, every year"),
+      ("1,2,3 0 0 * * ? *", "second is 1 2 3, minute is 0, hour is 0, every day, every month, any day of week, every year"),
+      ("* 0 0 * * ? *", "every second, minute is 0, hour is 0, every day, every month, any day of week, every year"),
+      ("0 3-5 0 * * ? *", "second is 0, minute is between 3 and 5, hour is 0, every day, every month, any day of week, every year"),
+      ("0 0 3/1 * * ? *", "second is 0, minute is 0, every hour starting at 3, every day, every month, any day of week, every year"),
+      ("0 0 1/3 * * ? *", "second is 0, minute is 0, every 3 hours starting at 1, every day, every month, any day of week, every year"),
+      ("0 0 0/3 * * ? *", "second is 0, minute is 0, every 3 hours, every day, every month, any day of week, every year"),
+      ("0 0 0 1 * ? *", "second is 0, minute is 0, hour is 0, day is 1, every month, any day of week, every year"),
+      ("0 0 0 * 2 ? *", "second is 0, minute is 0, hour is 0, every day, month is February, any day of week, every year"),
+      ("0 0 0 * * ? 2000", "second is 0, minute is 0, hour is 0, every day, every month, any day of week, year is 2000"),
+      ("12 0 23 * 11 ? 1978", "second is 12, minute is 0, hour is 23, every day, month is November, any day of week, year is 1978"),
+      ("0 23 0 15 * ? *", "second is 0, minute is 23, hour is 0, day is 15, every month, any day of week, every year"),
+      ("45 23 8 15 5 ? 2001", "second is 45, minute is 23, hour is 8, day is 15, month is May, any day of week, year is 2001"),
+      ("30-45 2/3 * 2,3,7 5 ? 2001-2005", "second is between 30 and 45, every 3 minutes starting at 2, every hour, day is 2 3 7, month is May, any day of week, year is between 2001 and 2005"),
+      ("0 0 * * * ? *", "second is 0, minute is 0, every hour, every day, every month, any day of week, every year"),
+      ("* * * * * ? *", "every second, every minute, every hour, every day, every month, any day of week, every year"),
+      ("* * * * * ? 2015/1", "every second, every minute, every hour, every day, every month, any day of week, every year starting at 2015"),
+      ("* * * * * ? 2015/2", "every second, every minute, every hour, every day, every month, any day of week, every 2 years starting at 2015"),
+      ("0 0 0 1 1 ? 2015/1", "second is 0, minute is 0, hour is 0, day is 1, month is January, any day of week, every year starting at 2015"),
+      ("0 0 0 1 1 ? 2015/2", "second is 0, minute is 0, hour is 0, day is 1, month is January, any day of week, every 2 years starting at 2015")
 
     )
-    def verify(testTuple:(String, String)): Unit = {
+    def verify(testTuple: (String, String)): Unit = {
       val (cron, expected) = testTuple
       val actual = VerboseCron.cronToVerboseCron(cron)
       assert(actual === Right(expected))
     }
     testData.foreach(verify)
+  }
+
+  test("increment step is not validated as the unit") {
+    val cron = "0 0 0 * * ? 2000/4"
+    val expected = Right("second is 0, minute is 0, hour is 0, every day, every month, any day of week, every 4 years starting at 2000")
+    val actual = VerboseCron.cronToVerboseCron(cron)
+    assert(actual === expected)
+  }
+
+  test("invalid cron expressions") {
+    val testData = Seq(
+      ("", "cron expression must not be empty"),
+      ("1", "cron expression '1' is invalid, it must have 6 or 7 elements, but has 1"),
+      ("1 2 3 4 5", "cron expression '1 2 3 4 5' is invalid, it must have 6 or 7 elements, but has 5"),
+      ("1 2 3 4 5 6 7 8", "cron expression '1 2 3 4 5 6 7 8' is invalid, it must have 6 or 7 elements, but has 8")
+    )
+    def invalidExpressionTest(testDatum: (String, String)) {
+      val (cronExpression, expectedMessage) = testDatum
+      val actual = VerboseCron.cronToVerboseCron(cronExpression)
+      val expected = Left(expectedMessage)
+      assert(actual === expected)
+    }
+    testData.foreach(invalidExpressionTest)
   }
 }
