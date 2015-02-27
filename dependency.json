@@ -2,7 +2,7 @@
     "searchPaths": [
         [ "core", "target", "cron-format-core-1.0-SNAPSHOT.jar" ]
     ],
-    "styleSheet": [ "dependency-metrics.css" ],
+    "styleSheet": [ "dependency.css" ],
     "relevantDependencyPattern": {
         "includeRegex": [ "com/seanshubin/cron/format/core/.*" ],
         "excludeRegex": [ ]
@@ -20,7 +20,7 @@
     "classLimits": {
         "depth": 10,
         "complexity": 100,
-        "cycleCount": 0
+        "cycleCount": 1
     },
     "packageLimits": {
         "depth": 10,
