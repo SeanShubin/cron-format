@@ -1,31 +1,52 @@
 {
-    "searchPaths": [
-        [ "core", "target", "cron-format-core-1.0-SNAPSHOT.jar" ]
+  "searchPaths": [
+    [
+      "core",
+      "target",
+      "cron-format-core-1.0-SNAPSHOT.jar"
+    ]
+  ],
+  "scrubGroupingPattern": "com/seanshubin/([^/]+).*",
+  "styleSheet": ["dependency.css"],
+  "relevantDependencyPattern": {
+    "includeRegex": ["com/seanshubin/cron/format/core/.*"],
+    "excludeRegex": []
+  },
+  "trimRegex": "^com/seanshubin/cron/format/core/",
+  "classFileNamePattern": {
+    "includeRegex": [".*\\.class"],
+    "excludeRegex": []
+  },
+  "zipFileNamePattern": {
+    "includeRegex": [
+      ".*\\.zip",
+      ".*\\.war",
+      ".*\\.jar"
     ],
-    "styleSheet": [ "dependency.css" ],
-    "relevantDependencyPattern": {
-        "includeRegex": [ "com/seanshubin/cron/format/core/.*" ],
-        "excludeRegex": [ ]
-    },
-    "trimRegex": "^com/seanshubin/cron/format/core/",
-    "classFileNamePattern": {
-        "includeRegex": [ ".*\\.class" ],
-        "excludeRegex": [ ]
-    },
-    "zipFileNamePattern": {
-        "includeRegex": [ ".*\\.zip", ".*\\.war", ".*\\.jar" ],
-        "excludeRegex": [ ]
-    },
-    "generatedReportDirectory": [ "core", "target", "dependency-report" ],
-    "classLimits": {
-        "depth": 10,
-        "complexity": 100,
-        "cycleCount": 1
-    },
-    "packageLimits": {
-        "depth": 10,
-        "complexity": 50,
-        "cycleCount": 0
-    },
-    "failIfAnyLimitExceeded": true
+    "excludeRegex": []
+  },
+  "generatedReportDirectory": [
+    "core",
+    "target",
+    "dependency-report"
+  ],
+  "classLimits": {
+    "depth": 10,
+    "complexity": 100,
+    "cycleCount": 1,
+    "cycleSize": 0
+  },
+  "packageLimits": {
+    "depth": 10,
+    "complexity": 50,
+    "cycleCount": 0,
+    "cycleSize": 0
+  },
+  "groupingLimits": {
+    "depth": 1,
+    "complexity": 0,
+    "cycleCount": 0,
+    "cycleSize": 0
+  },
+  "failIfAnyLimitExceeded": true
 }
