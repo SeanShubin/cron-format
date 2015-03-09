@@ -34,7 +34,7 @@
     "depth": 10,
     "complexity": 100,
     "cycleCount": 1,
-    "cycleSize": 0
+    "cycleSize": 8
   },
   "packageLimits": {
     "depth": 10,
