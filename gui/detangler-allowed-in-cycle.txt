@@ -1,0 +1,12 @@
+[
+    domain
+    CronMatchResult
+]
+[
+    domain
+    CronPatternMatcher
+]
+[
+    domain
+    CronTimeUnitEnum
+]

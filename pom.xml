@@ -1,19 +1,22 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <!-- The Basics -->
-    <groupId>com.seanshubin</groupId>
-    <artifactId>cron-format</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.seanshubin.cron.format</groupId>
+    <artifactId>cron-format-parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <dependencies>
         <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.12</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
-    <!--<parent>...</parent>-->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -22,27 +25,25 @@
                 <version>2.12.4</version>
             </dependency>
             <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-swing</artifactId>
-                <version>2.11.0-M7</version>
-            </dependency>
-            <dependency>
                 <groupId>org.scalatest</groupId>
                 <artifactId>scalatest_2.12</artifactId>
                 <version>3.0.4</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-swing</artifactId>
+                <version>2.11.0-M7</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
-        <module>core</module>
+        <module>domain</module>
         <module>gui</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <!-- Build Settings -->
     <build>
         <plugins>
             <plugin>
@@ -63,12 +64,16 @@
                         <jvmArg>-Xms64m</jvmArg>
                         <jvmArg>-Xmx1024m</jvmArg>
                     </jvmArgs>
+                    <args>
+                        <arg>-unchecked</arg>
+                        <arg>-deprecation</arg>
+                        <arg>-feature</arg>
+                    </args>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -82,9 +87,8 @@
             </plugin>
             <!-- disable surefire -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.7</version>
+                <version>2.20.1</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
@@ -96,7 +100,7 @@
                 <plugin>
                     <groupId>org.scalatest</groupId>
                     <artifactId>scalatest-maven-plugin</artifactId>
-                    <version>1.0</version>
+                    <version>2.0.0</version>
                     <configuration>
                         <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                         <junitxml>.</junitxml>
@@ -114,26 +118,66 @@
             </plugins>
         </pluginManagement>
     </build>
-    <!--<reporting>...</reporting>-->
-
-    <!-- More Project Information -->
-    <name>cron-format</name>
-    <!--<description>...</description>-->
-    <!--<url>...</url>-->
-    <!--<inceptionYear>...</inceptionYear>-->
-    <!--<licenses>...</licenses>-->
-    <!--<organization>...</organization>-->
-    <!--<developers>...</developers>-->
-    <!--<contributors>...</contributors>-->
-
-    <!-- Environment Settings -->
-    <!--<issueManagement>...</issueManagement>-->
-    <!--<ciManagement>...</ciManagement>-->
-    <!--<mailingLists>...</mailingLists>-->
-    <!--<scm>...</scm>-->
-    <!--<prerequisites>...</prerequisites>-->
-    <!--<repositories>...</repositories>-->
-    <!--<pluginRepositories>...</pluginRepositories>-->
-    <!--<distributionManagement>...</distributionManagement>-->
-    <!--<profiles>...</profiles>-->
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Give you an idea of what the cron schedule is without having to refer to the cron syntax.</description>
+    <url>https://github.com/SeanShubin/cron-format</url>
+    <licenses>
+        <license>
+            <name>Unlicense</name>
+            <url>http://unlicense.org/</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Sean Shubin</name>
+            <organization>Sean Shubin</organization>
+            <organizationUrl>http://seanshubin.com/</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>git@github.com:SeanShubin/cron-format.git</connection>
+        <developerConnection>git@github.com:SeanShubin/cron-format.git</developerConnection>
+        <url>https://github.com/SeanShubin/cron-format</url>
+    </scm>
+    <distributionManagement>
+        <repository>
+            <id>maven-staging</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>stage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>generate-dummy-javadoc-per-maven-central-requirements</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

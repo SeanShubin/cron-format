@@ -7,7 +7,7 @@ import event.ValueChanged
 import java.awt.Dimension
 import swing.Color
 import javax.swing.JPanel
-import com.seanshubin.cron.format.core.CronFormat
+import com.seanshubin.cron.format.domain.CronFormat
 
 
 object CronGui extends SimpleSwingApplication {

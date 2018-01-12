@@ -1,0 +1,33 @@
+{
+  reportDir gui/target/detangled
+  searchPaths
+  [
+    ./gui/target/cron-format.jar
+  ]
+  level 2
+  startsWith
+  {
+    include
+    [
+      [
+        com
+        seanshubin
+        cron
+        format
+      ]
+    ]
+    exclude []
+    drop
+    [
+      [
+        com
+        seanshubin
+        cron
+        format
+      ]
+    ]
+  }
+  ignoreFiles []
+  canFailBuild true
+  allowedInCycle gui/detangler-allowed-in-cycle.txt
+}

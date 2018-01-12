@@ -1,0 +1,39 @@
+{
+  prefix [com seanshubin]
+  name [cron format]
+  description 'Give you an idea of what the cron schedule is without having to refer to the cron syntax.'
+  version 0.1-SNAPSHOT
+  developer {
+    name 'Sean Shubin'
+    githubName SeanShubin
+    mavenUserName SeanShubin
+    organization 'Sean Shubin'
+    url http://seanshubin.com/
+  }
+  dependencies {
+    scala-library {
+      group org.scala-lang
+      artifact scala-library
+    }
+    scala-test {
+      group org.scalatest
+      artifact scalatest_2.12
+      scope test
+    }
+    scala-swing {
+      group org.scala-lang
+      artifact scala-swing
+      lockedAtVersion 2.11.0-M7
+      comment 'Looks like this project is abandoned, so not expecting a 2.12 version any time soon'
+    }
+  }
+  global [scala-library scala-test]
+  modules {
+    domain []
+    gui    [domain scala-swing]
+  }
+  detangler [gui]
+  consoleEntryPoint {
+    gui com.seanshubin.cron.format.gui.CronGui
+  }
+}
